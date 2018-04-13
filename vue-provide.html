@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="./vue.js"></script>
+</head>
+<body>
+<div id="app">
+	<component v-bind:is="myComponent"></component>
+</div>
+<script type="text/javascript">
+
+	var Child1 = {
+	  template: '<div>A custom child1 !{{ foo }}</div>',
+	  data(){
+	  	return{
+	  		message:'ssss1',
+	  		foo:'asd'
+	  	}
+
+
+	  },
+	  inject: ['foo'],
+	}
+	var Child = {
+	  template: '<div>A custom child !{{ foo }}<child1></child1></div>',
+	  data(){
+	  	return{
+	  		message:'ssss1'
+	  	}
+
+	  },
+	  inject: ['foo'],
+	  components:{
+	  	child1:Child1
+	  }
+	}
+
+
+	var vue = new Vue({
+		el:"#app",
+		name:'ss',
+		data(){
+			return {
+				message:'ss',
+				myComponent:"myComponent",
+				foo:'123'
+			}
+			
+		},
+		provide: {
+			    foo: 'bar'
+			},
+		components: {
+		    // <my-component> 将只在父组件模板中可用
+		    'myComponent': {
+		    	  data(){
+					return{
+					  	message:'123',
+					  	ssss:'sssss'
+					  }
+		    	  },
+		    	  provide: {
+					    foo: 'bar1'
+					},
+				  template: '<div>A custom component!<child></child></div>',
+				  components:{
+				  	child:Child
+				  },
+
+			}
+		}
+	})
+
+</script>
+</body>
+</html>

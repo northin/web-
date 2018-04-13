@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="./vue.js"></script>
+</head>
+<body>
+<div id="app">
+	<component v-bind:is="myComponent"></component>
+</div>
+<div id="child"> </div>			
+<script type="text/javascript">
+
+	var Child1 = Vue.extend({
+	  template: '<div>A custom child1 !</div>',
+	  data(){
+	  	return{
+	  		message:'ssss1'
+	  	}
+
+	  },
+	})
+	new Child1().$mount('#child')
+	var Child = {
+	  template: '<div>A custom child ! <child1></child1></div>',
+	  data(){
+	  	return{
+	  		message:'ssss1'
+	  	}
+
+	  },
+	  components:{
+	  	child1:Child1
+	  }
+	}
+
+	var vue = new Vue({
+		el:"#app",
+		name:'ss',
+		data(){
+			return {
+				message:'ss',
+				myComponent:"myComponent"
+			}
+			
+		},
+		created:function(){
+			
+		},
+		components: {
+		    // <my-component> 将只在父组件模板中可用
+		    'myComponent': {
+		    	  data(){
+					return{
+					  	message:'123',
+					  	ssss:'sssss'
+					  }
+		    	  },
+		    	  //mixins:[myMinix],
+				  template: '<div>A custom component!<child></child></div>',
+				  components:{
+				  	child:Child
+				  },
+
+			}
+		}
+	})
+
+</script>
+</body>
+</html>

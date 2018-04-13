@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="./vue.js"></script>
+</head>
+<body>
+<div id="app">
+	{{ message }}
+	<div @click="ons">aaa</div>
+	<component v-bind:is="myComponent"></component>
+}
+</div>
+<script type="text/javascript">
+
+	var Child1 = {
+	  template: '<div>A custom child1 ! {{ sss }}<div></div></div>',
+	  data(){
+	  	return{
+	  		message:'ssss1'
+	  	}
+
+	  },
+	  props:["sss"],
+	}
+	var Child = {
+	  template: '<div>A custom child ! {{ myMessage }} <child1 v-bind="$attrs" v-on="$listeners"></child1><div></div></div>',
+	  data(){
+	  	return{
+	  		message:'ssss1'
+	  	}
+
+	  },
+	  props:["myMessage"],
+	  components:{
+	  	child1:Child1
+	  }
+	}
+	// Vue.set(Vue,"foo",'bar');
+	
+	var vue = new Vue({
+		el:"#app",
+		name:'ss',
+		data(){
+			return {
+				// message:['ss','asd'],
+				message:{"constructor":'123'},
+				myComponent:"myComponent"
+			}
+			
+		},
+		created:function(){
+			// this.$set(this.message,2,'bar')
+			
+			// this.$set(this.message,"foo",'bar')
+			// this.$set(this.message,"constructor",'bar')
+			// console.log(this.__proto__.constructor.foo)	 //bar
+		},
+		methods:{
+			ons(){
+				// this.message.push("123")
+				// this.$set(this.message,2,'bar')
+				// this.message.aa = '123'
+				this.$set(this.message,"constructor",'bar')
+			}
+		},
+		mounted:function(){
+			console.log(this.message)
+		},
+		components: {
+		    // <my-component> 将只在父组件模板中可用
+		    'myComponent': {
+		    	  data(){
+					return{
+					  	message:'123',
+					  	ssss:'sssss'
+					  }
+		    	  },
+				  template: '<div>A custom component!<child :my-message=message :sss="ssss"></child></div>',
+				  components:{
+				  	child:Child
+				  },
+
+			}
+		}
+	})
+	
+</script>
+</body>
+</html>
