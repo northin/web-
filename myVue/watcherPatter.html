@@ -1,0 +1,29 @@
+<html>
+    <body>
+        
+    </body>
+    <script>
+        var sub1 = function(){console.log(1)}
+        var sub2 = function(){console.log(2)}
+        var sub3 = function(){console.log(3)}
+        function Dep(){
+            this.subs = [sub1,sub2,sub3]
+        }
+        
+        
+        var pub = {
+            publish: function(){
+                dep.notify()
+            }
+        }
+        var dep = new Dep()
+        Dep.prototype.notify = function(){
+            dep.subs.forEach(element => {
+                element()
+            });
+        }
+        pub.publish()
+
+
+    </script>
+</html>

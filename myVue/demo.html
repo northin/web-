@@ -1,0 +1,19 @@
+<html>
+    <script src="./myEasyVue.js"></script>
+    <body>
+       <div id="app">
+           <input v-model="text" />
+           {{ text }}
+           <div>123</div>
+           {{text}}
+       </div> 
+    </body>
+    <script>
+        let app = new Vue({
+            el:"#app",
+            data:{
+                text:'hello world'
+            }
+        })
+    </script>
+</html>
