@@ -5,8 +5,11 @@ function Vue(obj){
     this.el = obj.el
     this.data = obj.data
 
+    init(this)
     getTemplate(this.el,this)
     // watcher(this)
+    // defProt(this.data,this.data)
+
 }
 
 function getTemplate(el,vm){
@@ -34,9 +37,9 @@ function getTemplate(el,vm){
             if(regVlue){
                 // 2.添加数据
                 let currText = currElement.nodeValue.trim().slice(2,-2).trim()
-                let currData = vm.data[currText]
+                // let currData = vm.data[currText]
 
-                let textElement = document.createTextNode(currData)
+                let textElement = document.createTextNode("")
                 myDom.appendChild(textElement)
                 document.querySelector(el).removeChild(currElement)
                 i = i -1
@@ -45,7 +48,7 @@ function getTemplate(el,vm){
                 new Watcher(vm,textElement,currText)
             }
         }
-        
+
     }
     document.querySelector(el).appendChild(myDom)
 }
@@ -64,7 +67,7 @@ Watcher.prototype = {
         this.node.nodeValue = this.value
     },
     get(){
-       this.value = this.vm[this.name]
+       this.value = this.vm.data[this.name]
     }
 }
 
@@ -82,15 +85,16 @@ Dep.prototype = {
         });
     }
 }
-function defProt(obj,attr,fnObj){
+function defProt(obj,attr,val){
     var dep = new Dep()
     Object.defineProperty(obj,attr,{
         set(value){
+            val = value
             dep.notify()
-        },get(value){
-            if(Dep.target) return 
-                dep.addSubs(Dep.target)
-            return value
+        },get(){
+            if(Dep.target) dep.addSubs(Dep.target)
+
+            return val
         }
     })
 }
@@ -98,7 +102,13 @@ function defProt(obj,attr,fnObj){
 function observer(node,text,vm){
     node.onkeyup = function(e){
         vm.data[text] = e.target.value
+        console.log(vm.data[text])
     }
 }
 
-
+function init(vm){
+  let keyList = Object.keys(vm.data);
+  for (var i = 0; i < keyList.length; i++) {
+    defProt(vm.data,keyList[i],vm.data[keyList[i]])
+  }
+}
